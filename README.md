@@ -2,16 +2,24 @@
 [Proteomics] Utility scripts for analysis of label-free quantification data obtained on LTQ-Orbitrap with Dinosaur peak picker, SearchGUI/PeptideShaker, and OpenMS/TOPPAS.
 
 ## Description
-   For label-free quantification, I generally use SearchGUI and PeptideShaker for MS/MS identification, as these open-source software allows the use of multiple search engines (I prefer to use X!Tandem, but other search engines including OMSSA, MSGFplus etc. are also aavailable). For SearchGUI, I use MGF files as input files (RAW files can also be converted to MGF within SearchGUI, but I have not tested this).
-   For quantification of peptide peaks (features), my favorite tool is Dinosaur feature finder. From my (limited) experience, Dnosaur out performed XCMS (as an R package) centwave feature finder with regard to sensitivity and accuracy (especially, charge state recognition was highly reliable compared to CAMERA package within R).
-   To combine the identification result and the quantification result, we can use OpenMS/TOPPAS workflow. Dinosaur can export the detected features as a tsv (tab-separated) files compatible with OpenMS/TOPPAS. The identification result can also be exported to mzIdentML format from PeptideShaker. Thus, we can use OpenMS/TOPPAS to combine (i.e., map) the quantification result with the identified peptides.
-   The output from OpenMS/TOPPAS would be peptide(protein)-quantification list and "consensus feature" file, which contains PSMs (peptide spectrum matches) with m/z, charge, rt, and quantity etc. So, to simply compare peptide/protein abundance, we can use the former list. If more detailed information is needed (e.g., rt and m/z), we need to process/summarize consensus feature data as this contains multiple identifications for a single peptide (mutiple MS/MS spectrum v.s. peptide matches, with different charge state and different rt).
+
+   For MS/MS identification, my favorite softwares are SearchGUI and PeptideShaker, as these open-source, cross-platform software allows the use of multiple search engines (I prefer to use X!Tandem, but other search engines including OMSSA, MSGFplus etc. are also aavailable) on a Mac. For SearchGUI, MGF files are required as input files (RAW files can also be converted to MGF within SearchGUI, but I have not tested this).
+
+   For quantification of peptide peaks (features), my favorite tool is Dinosaur feature finder. From my (limited) experience, Dnosaur out performed XCMS (as an R package) centwave feature finder with regard to sensitivity and accuracy (especially, charge state recognition was highly reliable compared to CAMERA package within R).
+
+   To combine the identification result and the quantification result, we can use OpenMS/TOPPAS workflow. Dinosaur can export the detected features as a tsv (tab-separated) files compatible with OpenMS/TOPPAS. The identification result can also be exported to mzIdentML format from PeptideShaker. Thus, we can use OpenMS/TOPPAS to combine (i.e., map) the quantification result with the identified peptides.
+
+   The output from OpenMS/TOPPAS would be peptide(protein)-quantification list and "consensus feature" file, which contains PSMs (peptide spectrum matches) with m/z, charge, rt, and quantity etc. So, to simply compare peptide/protein abundance, we can use the former list. If more detailed information is needed (e.g., rt and m/z), we need to process/summarize consensus feature data as this contains multiple identifications for a single peptide (mutiple MS/MS spectrum v.s. peptide matches, with different charge state and different rt).
 
 ## Usage
-The following is a step-by-step guide to perform a label-free quantification with Dinosaur, SearchGUI/PeptideShaker, and OpenMS/TOPPAS. I use these scripts on a MacBookPro with OS X 10.10.5 (Yosemite) except for step 1, which is performed on a Windows 7 installed with Thermo Xcalibur softwares.
+   The following is a step-by-step guide to perform a label-free quantification with Dinosaur, SearchGUI/PeptideShaker, and OpenMS/TOPPAS. I use these scripts on a MacBookPro with OS X 10.10.5 (Yosemite) except for step 1, which is performed on a Windows 7 installed with Thermo Xcalibur softwares.
 
 ### Step 1: Converting Thermo RAW files into MGF files (MS2) and mzML files (LC-MS1) with msConvert
+The first step is to convert LC-MS/MS data files from Thermo RAW format to the required open-source format; MGF for MS2 and mzML for LC-MS1. Although this step can be done with GUI version of msConvert, the use of batch script makes it easy to process multiple files.
 
+1. (only for the first time) Edit the batch file and modify the path of the msConvert executable (I use full path but you can use the environmental variable PATH).
+2. Place the batch file in a directory containing RAW files to process. Note that in this directory, there should be no other unrelated RAW files (the batch script process ALL the RAW files in the directory).
+3. Double click the batch file, and you see directories named "mgf" and "mzML" are made in the parent directory, and they contains the converted files.
 
 ### Step 2: Peptide/Protein identification by SearchGUI/PeptideShaker and export to mzIdentML format
 
